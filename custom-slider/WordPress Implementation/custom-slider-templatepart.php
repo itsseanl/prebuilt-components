@@ -1,6 +1,6 @@
 /**
 * This is meant to be used as a template part within a WordPress site utilizing Advanced Custom Fields Pro
-*
+* This implementation is a group of slug hero_slider with a nested repeater of slug slides
 */
 
 <div class="slider-wrapper w-screen m-auto overflow-hidden max-w-full">
