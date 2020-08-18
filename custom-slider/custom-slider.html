@@ -1,0 +1,163 @@
+<html>
+  <head> </head>
+  <body>
+    <div class="slider-wrapper">
+      <div id="slider" class="slider transition">
+        <div class="slide">1 <img src="img.jpg" /></div>
+        <div class="slide">2 <img src="img2.jpg" /></div>
+        <div class="slide">3 <img src="img3.jpg" /></div>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <p id="slider-left" onclick="left()"><</p>
+      <p id="slider-right" onclick="right()">></p>
+    </div>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      .slider-wrapper {
+        width: 90vw;
+        margin: auto;
+        overflow: hidden;
+      }
+      .slider {
+        width: auto;
+        height: 80vh;
+        margin: auto;
+        display: flex;
+
+        border: 2px solid black;
+        transform: translateX(-90vw);
+      }
+      .slide {
+        width: 90vw;
+        background: grey;
+        height: 30vh;
+        border: 1px solid red;
+        flex: 1 0 auto;
+      }
+      .slide > img {
+        object-fit: cover;
+        object-position: center;
+        top: 0;
+        width: 100%;
+        height: auto;
+      }
+      .slider-controls {
+        display: flex;
+        justify-content: space-between;
+      }
+      .transition {
+        -webkit-transition: 0.3s all;
+        -moz-transition: 0.3s all;
+        -o-transition: 0.3s all;
+        transition: 0.3s all;
+      }
+      .notransition {
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -o-transition: none !important;
+        transition: none !important;
+      }
+    </style>
+    <script type="text/javascript">
+      var slideRight = document.getElementById("slider-right");
+      var slideLeft = document.getElementById("slider-left");
+      var theSlider = document.getElementById("slider");
+      var slides = document.getElementsByClassName("slide");
+      var count = slides.length;
+      var position = 2;
+      var newChild = slides[slides.length - 1];
+      var lastClicked = "";
+      theSlider.innerHTML =
+        newChild.outerHTML + theSlider.innerHTML + slides[0].outerHTML;
+
+      console.log("position: " + position + " count: " + count);
+
+      function right() {
+        console.log("position: " + position + " count: " + count);
+        if (lastClicked == "left") {
+          position++;
+        }
+        if (position <= count) {
+          console.log("right, position<=count");
+
+          theSlider.style.transform = `translateX(-${9 * position}0vw)`;
+          position++;
+        } else if (position > count) {
+          console.log("right, position >count");
+
+          theSlider.style.transform = `translateX(-${9 * position}0vw)`;
+          setTimeout(function () {
+            theSlider.classList.remove("transition");
+            theSlider.classList.add("notransition");
+
+            theSlider.style.transform = "translateX(-90vw)";
+          }, 300);
+
+          setTimeout(function () {
+            theSlider.classList.add("transition");
+            theSlider.classList.remove("notransition");
+          }, 600);
+          position = 2;
+        }
+        console.log("position: " + position + " count: " + count);
+        lastClicked = "right";
+        return position, lastClicked;
+      }
+
+      function left() {
+        if (lastClicked == "right") {
+          position--;
+        }
+        if (position > 2) {
+          console.log("left, position >=2");
+          position--;
+          if (position == 1) {
+            theSlider.style.transform = `translateX(0vw)`;
+            position = slides.length - 2;
+            setTimeout(function () {
+              theSlider.classList.remove("transition");
+              theSlider.classList.add("notransition");
+              theSlider.style.transform = `translateX(-${9 * position}0vw)`;
+            }, 300);
+
+            setTimeout(function () {
+              theSlider.classList.add("transition");
+              theSlider.classList.remove("notransition");
+            }, 600);
+          } else {
+            theSlider.style.transform = `translateX(-${9 * position}0vw)`;
+          }
+        } else if (position < 2) {
+          console.log("left, position <=2");
+          position = slides.length - 2;
+          theSlider.style.transform = `translateX(0vw)`;
+          setTimeout(function () {
+            theSlider.classList.remove("transition");
+            theSlider.classList.add("notransition");
+
+            console.log(position);
+            theSlider.style.transform = `translateX(-${9 * position}0vw)`;
+          }, 300);
+
+          setTimeout(function () {
+            theSlider.classList.add("transition");
+            theSlider.classList.remove("notransition");
+          }, 600);
+        } else if (position == 2) {
+          position--;
+          theSlider.style.transform = `translateX(-${9 * position}0vw)`;
+        }
+        console.log("position: " + position + " count: " + count);
+        lastClicked = left;
+        return position, lastClicked;
+      }
+
+      setInterval(function () {
+        right();
+      }, 5000);
+    </script>
+  </body>
+</html>
